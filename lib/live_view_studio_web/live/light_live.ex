@@ -1,7 +1,10 @@
 defmodule LiveViewStudioWeb.LightLive do
   use LiveViewStudioWeb, :live_view
 
+  on_mount {LiveViewStudio.MyPlug, :live_title}
+
   def mount(_params, _session, socket) do
+    IO.inspect("Lights Mount")
     socket = assign(socket, brightness: 10, temp: "3000", temp_color: temp_color("3000"))
     {:ok, socket}
   end
@@ -57,6 +60,7 @@ defmodule LiveViewStudioWeb.LightLive do
           value={@brightness}
         />
       </form>
+      <.link href={~p"/sandbox"}>Sandbox</.link>
     </div>
     """
   end

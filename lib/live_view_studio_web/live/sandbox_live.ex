@@ -6,6 +6,8 @@ defmodule LiveViewStudioWeb.SandboxLive do
   import Number.Currency
 
   def mount(_params, _session, socket) do
+    IO.inspect("Snadbox Mount")
+
     socket =
       assign(socket,
         length: "0",

@@ -19,7 +19,16 @@ defmodule LiveViewStudioWeb.Router do
 
   scope "/", LiveViewStudioWeb do
     pipe_through [:browser, :require_authenticated_user]
-    live "/topsecret", TopSecretLive
+
+    live_session :authenticated,
+      on_mount: [
+        {LiveViewStudioWeb.UserAuth, :ensure_authenticated},
+        {LiveViewStudio.MyPlug, :live_title}
+      ] do
+      live "/topsecret", TopSecretLive
+      live "/presence", PresenceLive
+      live "/bingo", BingoLive
+    end
   end
 
   scope "/", LiveViewStudioWeb do
@@ -37,12 +46,10 @@ defmodule LiveViewStudioWeb.Router do
     live "/servers", ServersLive
     live "/donations", DonationsLive
     live "/volunteers", VolunteersLive
-    live "/presence", PresenceLive
     live "/bookings", BookingsLive
     live "/shop", ShopLive
     live "/juggling", JugglingLive
     live "/desks", DesksLive
-    live "/bingo", BingoLive
     live "/vehicles", VehiclesLive
     live "/athletes", AthletesLive
     live "/pizza-orders", PizzaOrdersLive
