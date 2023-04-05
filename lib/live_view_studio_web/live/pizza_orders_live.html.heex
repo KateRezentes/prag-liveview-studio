@@ -1,0 +1,101 @@
+<h1>Pizza Orders</h1>
+<div id="pizza-orders">
+  <form phx-change="select-per-page">
+    <select name="per-page">
+      <%= Phoenix.HTML.Form.options_for_select([5, 10, 15, 20], 10) %>
+    </select>
+    <label for="per-page">per page</label>
+  </form>
+  <div class="wrapper">
+    <table>
+      <thead>
+        <tr>
+          <th class="id">
+            <.link patch={
+              ~p"/pizza-orders?#{%{sort_by: "id", sort_order: next_sort_order(@options.sort_order)}}"
+            }>
+              #
+            </.link>
+          </th>
+          <th>
+            <.link patch={
+              ~p"/pizza-orders?#{%{sort_by: "size", sort_order: next_sort_order(@options.sort_order)}}"
+            }>
+              Size
+            </.link>
+          </th>
+          <th>
+            <.link patch={
+              ~p"/pizza-orders?#{%{sort_by: "style", sort_order: next_sort_order(@options.sort_order)}}"
+            }>
+              Style
+            </.link>
+          </th>
+          <th>
+            <.link patch={
+              ~p"/pizza-orders?#{%{sort_by: "topping_1", sort_order: next_sort_order(@options.sort_order)}}"
+            }>
+              Topping 1
+            </.link>
+          </th>
+          <th>
+            <.link patch={
+              ~p"/pizza-orders?#{%{sort_by: "topping_2", sort_order: next_sort_order(@options.sort_order)}}"
+            }>
+              Topping 2
+            </.link>
+          </th>
+          <th>
+            <.link patch={
+              ~p"/pizza-orders?#{%{sort_by: "price", sort_order: next_sort_order(@options.sort_order)}}"
+            }>
+              Price
+            </.link>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr :for={order <- @pizza_orders}>
+          <td class="id">
+            <%= order.id %>
+          </td>
+          <td>
+            <%= order.size %>
+          </td>
+          <td>
+            <%= order.style %>
+          </td>
+          <td>
+            <%= order.topping_1 %>
+          </td>
+          <td>
+            <%= order.topping_2 %>
+          </td>
+          <td class="price">
+            <%= number_to_currency(order.price) %>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="footer">
+      <div class="pagination">
+        <.link
+          :if={1 < @options.page}
+          patch={
+            ~p"/pizza-orders?#{%{@options | page: @options.page - 1}}"
+          }
+        >
+          Prev
+        </.link>
+        <.link
+          :if={is_last_page?(@options.page, @options.per_page)}
+          patch={
+            ~p"/pizza-orders?#{%{@options | page: @options.page + 1}}"
+          }
+        >
+          Next
+        </.link>
+      </div>
+    </div>
+  </div>
+</div>
